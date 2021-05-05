@@ -8,6 +8,7 @@ namespace Webshop.Models
     {
         public int Id { get; set; }
 
+        [Required]
         [StringLength(50, ErrorMessage = "Category name length is 50 chars max")]
         public string Name { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Webshop.Models
 {
@@ -9,7 +10,6 @@ namespace Webshop.Models
 
         [JsonIgnore]
         public Product Product { get; set; }
-
         public int ProductId { get; set; }
     }
 }

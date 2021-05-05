@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Webshop.Models;
 
@@ -26,7 +29,10 @@ namespace Webshop
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            services.AddOData(options => options
+            .Filter().Expand().Select().OrderBy().SkipToken().SetMaxTop(100)
+            .AddModel("Odata", GetEdmModel()
+            ));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Webshop", Version = "v1" });
@@ -53,6 +59,13 @@ namespace Webshop
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Product>("Products");
+            return builder.GetEdmModel();
         }
     }
 }

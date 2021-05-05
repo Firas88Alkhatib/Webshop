@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Webshop.Models
 {
@@ -7,6 +8,7 @@ namespace Webshop.Models
         public Address DeliveryAddresss { get; set; }
 
         [JsonIgnore]
+        [IgnoreDataMember]
         public ApplicationUser User { get; set; }
 
         public int UserId { get; set; }

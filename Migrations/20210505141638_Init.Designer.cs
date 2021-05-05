@@ -10,7 +10,7 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210504212400_Init")]
+    [Migration("20210505141638_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,53 @@ namespace Webshop.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("CategoryProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoriesId = 1,
+                            ProductsId = 1
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            ProductsId = 1
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            ProductsId = 2
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            ProductsId = 3
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            ProductsId = 4
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            ProductsId = 4
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            ProductsId = 5
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            ProductsId = 6
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            ProductsId = 7
+                        });
                 });
 
             modelBuilder.Entity("Webshop.Models.Address", b =>
@@ -120,12 +167,45 @@ namespace Webshop.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Chargers"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mobile Accessories"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Clothes"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Home appliance"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Garden"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Flowers"
+                        });
                 });
 
             modelBuilder.Entity("Webshop.Models.Image", b =>
@@ -146,6 +226,74 @@ namespace Webshop.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Images");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductId = 1,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductId = 1,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ProductId = 2,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ProductId = 2,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ProductId = 3,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ProductId = 4,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ProductId = 4,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ProductId = 4,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ProductId = 5,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ProductId = 6,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ProductId = 7,
+                            Url = "https://source.unsplash.com/user/c_v_r"
+                        });
                 });
 
             modelBuilder.Entity("Webshop.Models.Order", b =>
@@ -182,6 +330,9 @@ namespace Webshop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(8,2)");
+
                     b.Property<string>("Description")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
@@ -191,6 +342,7 @@ namespace Webshop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -202,6 +354,64 @@ namespace Webshop.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CostPrice = 17.25m,
+                            Description = "Type-C Phone Charger with Fast-Charging support",
+                            Name = "Phone Charger",
+                            Price = 24.99m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CostPrice = 9.21m,
+                            Description = "A T-Shirt for hot summer",
+                            Name = "T-Shirt",
+                            Price = 17.39m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CostPrice = 296.10m,
+                            Description = "Washing machine with 1700 rpm",
+                            Name = "Washing Machine",
+                            Price = 399m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CostPrice = 0.77m,
+                            Description = "Dahlia plant seeds to decorate your garden",
+                            Name = "Dahlia seeds",
+                            Price = 2.45m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CostPrice = 320m,
+                            Description = "LED TV with Android OS with 4K",
+                            Name = "LED 4K TV",
+                            Price = 429m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CostPrice = 29.61m,
+                            Description = "Winter jacket with water proof technology",
+                            Name = "Winter Jacket",
+                            Price = 56m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CostPrice = 8.2m,
+                            Description = "Wireless earphone with long ",
+                            Name = "Earphones",
+                            Price = 27.54m
+                        });
                 });
 
             modelBuilder.Entity("Webshop.Models.Supplier", b =>
@@ -218,6 +428,7 @@ namespace Webshop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")

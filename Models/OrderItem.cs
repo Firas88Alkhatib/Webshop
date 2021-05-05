@@ -8,10 +8,10 @@ namespace Webshop.Models
 {
     public class OrderItem : Product
     {
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 0;
 
         [Column(TypeName = "decimal(8, 2)")]
-        public decimal ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; } = 0;
         [Column(TypeName = "decimal(12, 2)")]
         public decimal TotalPrice => Quantity * ProductPrice;
     }

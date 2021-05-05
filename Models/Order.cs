@@ -10,14 +10,16 @@ namespace Webshop.Models
     {
         public int Id { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime OrderDate { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime DeliveryDate { get; set; }
 
-        public Boolean Delivered { get; set; }
+        public bool Delivered { get; set; }
 
+        [Required]
         public List<OrderItem> OrderItems { get; set; }
 
         [Column(TypeName = "decimal(12, 2)")]

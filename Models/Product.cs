@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace Webshop.Models
     {
         public int Id { get; set; }
 
+        [Required]
         [StringLength(100,ErrorMessage = "Product name length is 100 chars max")]
         public string Name { get; set; }
 
@@ -25,5 +27,9 @@ namespace Webshop.Models
 
         [JsonIgnore]
         public List<Category> Categories { get; set; }
+
+        [IgnoreDataMember]
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal CostPrice { get; set; }
     }
 }

@@ -54,7 +54,7 @@ namespace Webshop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace Webshop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -128,9 +128,10 @@ namespace Webshop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
+                    CostPrice = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     ProductPrice = table.Column<decimal>(type: "decimal(8,2)", nullable: true),
@@ -189,6 +190,67 @@ namespace Webshop.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Chargers" },
+                    { 2, "Mobile Accessories" },
+                    { 3, "Clothes" },
+                    { 4, "Home appliance" },
+                    { 5, "Garden" },
+                    { 6, "Flowers" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CostPrice", "Description", "Discriminator", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, 17.25m, "Type-C Phone Charger with Fast-Charging support", "Product", "Phone Charger", 24.99m },
+                    { 2, 9.21m, "A T-Shirt for hot summer", "Product", "T-Shirt", 17.39m },
+                    { 3, 296.10m, "Washing machine with 1700 rpm", "Product", "Washing Machine", 399m },
+                    { 4, 0.77m, "Dahlia plant seeds to decorate your garden", "Product", "Dahlia seeds", 2.45m },
+                    { 5, 320m, "LED TV with Android OS with 4K", "Product", "LED 4K TV", 429m },
+                    { 6, 29.61m, "Winter jacket with water proof technology", "Product", "Winter Jacket", 56m },
+                    { 7, 8.2m, "Wireless earphone with long ", "Product", "Earphones", 27.54m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CategoryProduct",
+                columns: new[] { "CategoriesId", "ProductsId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 3, 6 },
+                    { 4, 5 },
+                    { 6, 4 },
+                    { 2, 7 },
+                    { 4, 3 },
+                    { 5, 4 },
+                    { 3, 2 },
+                    { 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Images",
+                columns: new[] { "Id", "ProductId", "Url" },
+                values: new object[,]
+                {
+                    { 3, 2, "https://source.unsplash.com/user/c_v_r" },
+                    { 5, 3, "https://source.unsplash.com/user/c_v_r" },
+                    { 2, 1, "https://source.unsplash.com/user/c_v_r" },
+                    { 6, 4, "https://source.unsplash.com/user/c_v_r" },
+                    { 7, 4, "https://source.unsplash.com/user/c_v_r" },
+                    { 8, 4, "https://source.unsplash.com/user/c_v_r" },
+                    { 1, 1, "https://source.unsplash.com/user/c_v_r" },
+                    { 9, 5, "https://source.unsplash.com/user/c_v_r" },
+                    { 10, 6, "https://source.unsplash.com/user/c_v_r" },
+                    { 4, 2, "https://source.unsplash.com/user/c_v_r" },
+                    { 11, 7, "https://source.unsplash.com/user/c_v_r" }
                 });
 
             migrationBuilder.CreateIndex(
