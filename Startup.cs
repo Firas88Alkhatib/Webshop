@@ -1,14 +1,19 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
+using OData.Swagger.Services;
+using System.Linq;
 using Webshop.Models;
+
 
 namespace Webshop
 {
@@ -36,17 +41,26 @@ namespace Webshop
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Webshop", Version = "v1" });
+                c.DocInclusionPredicate((name, api) => api.HttpMethod != null);
             });
+            //AddFormatters(services);
+            services.AddOdataSwaggerSupport();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Webshop v1"));
+                
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseHttpsRedirection();
@@ -67,5 +81,6 @@ namespace Webshop
             builder.EntitySet<Product>("Products");
             return builder.GetEdmModel();
         }
+
     }
 }

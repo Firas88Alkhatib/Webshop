@@ -3,13 +3,15 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Models;
 
 namespace Webshop.Controllers
 {
-    
+    [Route("/")]
+    [ApiController]
     public class ProductsController : ODataController
     {
         private readonly ApplicationDbContext dbContext;
@@ -20,6 +22,7 @@ namespace Webshop.Controllers
         }
 
         [EnableQuery]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok(dbContext.Products);
@@ -27,10 +30,10 @@ namespace Webshop.Controllers
         [EnableQuery]
         public IActionResult Get([FromODataUri] int key)
         {
-            
             return Ok(dbContext.Products.Where(product=>product.Id == key));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Post(Product product)
         {
             if (!ModelState.IsValid)
