@@ -1,19 +1,22 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using OData.Swagger.Services;
-using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 using Webshop.Models;
-
+using Webshop.Models.Entities;
+using Webshop.Services;
 
 namespace Webshop
 {
@@ -38,12 +41,49 @@ namespace Webshop
             .Filter().Expand().Select().OrderBy().SkipToken().SetMaxTop(100)
             .AddModel("Odata", GetEdmModel()
             ));
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            JwtConfig jwtConfig = new();
+            Configuration.GetSection("JwtConfig").Bind(jwtConfig);
+            services.AddSingleton(jwtConfig);
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options => {
+                var secretKey = Encoding.UTF8.GetBytes(jwtConfig.SecretKey);
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true,
+                    ValidAlgorithms = new []{ "HS512" }
+                    
+                };
+            });
+            services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.ClaimsIdentity.UserIdClaimType = "Id";
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+            })
+           .AddUserManager<ApplicationUserManager>()
+           .AddRoles<IdentityRole>()
+           .AddRoleManager<RoleManager<IdentityRole>>()
+           .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Webshop", Version = "v1" });
                 c.DocInclusionPredicate((name, api) => api.HttpMethod != null);
             });
-            //AddFormatters(services);
             services.AddOdataSwaggerSupport();
         }
 
@@ -56,7 +96,6 @@ namespace Webshop
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Webshop v1"));
-                
             }
             else
             {
@@ -66,6 +105,8 @@ namespace Webshop
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -78,9 +119,8 @@ namespace Webshop
         private static IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Product>("Products");
+            builder.EntitySet<Product>("Products").EntityType.Ignore(p=>p.CostPrice);
             return builder.GetEdmModel();
         }
-
     }
 }

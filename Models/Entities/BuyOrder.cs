@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class BuyOrder : Order
     {

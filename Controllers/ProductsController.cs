@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Models;
+using Webshop.Models.Entities;
 
 namespace Webshop.Controllers
 {
@@ -28,12 +28,14 @@ namespace Webshop.Controllers
             return Ok(dbContext.Products);
         }
         [EnableQuery]
+        [HttpGet]
         public IActionResult Get([FromODataUri] int key)
         {
             return Ok(dbContext.Products.Where(product=>product.Id == key));
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post(Product product)
         {
             if (!ModelState.IsValid)

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class Supplier
     {

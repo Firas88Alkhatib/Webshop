@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class Product
     {
@@ -28,7 +28,6 @@ namespace Webshop.Models
         [JsonIgnore]
         public List<Category> Categories { get; set; }
 
-        [IgnoreDataMember]
         [Column(TypeName = "decimal(8, 2)")]
         public decimal CostPrice { get; set; }
     }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class OrderItem : Product
     {

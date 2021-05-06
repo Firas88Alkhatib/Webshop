@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class Order
     {

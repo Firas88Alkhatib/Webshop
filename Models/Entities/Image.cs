@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Webshop.Models
+namespace Webshop.Models.Entities
 {
     public class Image
     {
