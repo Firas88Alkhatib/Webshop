@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using OData.Swagger.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Webshop.Models;
@@ -59,10 +61,10 @@ namespace Webshop
                     IssuerSigningKey = new SymmetricSecurityKey(secretKey),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    RequireExpirationTime = false,
+                    RequireExpirationTime = true,
                     ValidateLifetime = true,
-                    ValidAlgorithms = new []{ "HS512" }
-                    
+                    ValidAlgorithms = new []{ "HS512" },
+                    ClockSkew = TimeSpan.Zero
                 };
             });
             services.AddIdentityCore<ApplicationUser>(options =>

@@ -8,7 +8,7 @@ namespace Webshop.Models
     public class JwtConfig
     {
         public string SecretKey { get; set; }
-        public int TokenExipryInMinutes { get; set; }
+        public int TokenExpiryInMinutes { get; set; }
         public int RefreshTokenExpiryInMonths { get; set; }
     }
 }

@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.OData.ModelBuilder;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Models;
 using Webshop.Models.Entities;
 
+
 namespace Webshop.Controllers
 {
     [Route("/")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ProductsController : ODataController
     {
         private readonly ApplicationDbContext dbContext;
@@ -35,7 +38,7 @@ namespace Webshop.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Post(Product product)
         {
             if (!ModelState.IsValid)

@@ -36,7 +36,7 @@ namespace Webshop.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddHours(6),
+                Expires = DateTime.UtcNow.AddMinutes(jwtConfig.TokenExpiryInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(jwtSecterKey), SecurityAlgorithms.HmacSha512Signature)
             };
             var jwtTokenHandler = new JwtSecurityTokenHandler();
